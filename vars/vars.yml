@@ -3,3 +3,4 @@ aws_profile: fw
 aws_region: eu-central-1
 
 project_name: poo-storm
+aws_account_id: 637752312216
