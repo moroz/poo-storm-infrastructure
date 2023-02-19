@@ -36,6 +36,13 @@ resource "aws_iam_policy" "lambda_policy" {
           "dynamodb:*"
         ],
         "Resource" : "arn:aws:dynamodb:${var.aws_region}:${var.aws_account_id}:table/Comments"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:ListTables",
+        ],
+        "Resource" : "*"
       }
     ]
   })

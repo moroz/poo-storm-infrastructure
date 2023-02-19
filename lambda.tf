@@ -5,6 +5,10 @@ resource "aws_lambda_function" "_" {
   handler          = "main"
   runtime          = "go1.x"
   source_code_hash = filebase64sha256("./lambda/main.zip")
+
+  lifecycle {
+    ignore_changes = [source_code_hash]
+  }
 }
 
 resource "aws_lambda_function_url" "api" {
