@@ -9,6 +9,12 @@ resource "aws_lambda_function" "_" {
   lifecycle {
     ignore_changes = [source_code_hash]
   }
+
+  environment {
+    variables = {
+      CLOUDFRONT_DISTRIBUTION_ID = "E3IT66EGD1FU89" # aws_cloudfront_distribution.distribution.id
+    }
+  }
 }
 
 resource "aws_lambda_function_url" "api" {

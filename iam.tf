@@ -43,6 +43,13 @@ resource "aws_iam_policy" "lambda_policy" {
           "dynamodb:ListTables",
         ],
         "Resource" : "*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "cloudfront:CreateInvalidation",
+        ],
+        "Resource" : aws_cloudfront_distribution.distribution.arn
       }
     ]
   })
