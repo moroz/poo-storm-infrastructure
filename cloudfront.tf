@@ -2,6 +2,28 @@ locals {
   origin_id = "LambdaOrigin"
 }
 
+resource "aws_cloudfront_response_headers_policy" "cors" {
+  name = "cors-response-policy"
+
+  cors_config {
+    access_control_allow_credentials = true
+
+    access_control_allow_headers {
+      items = ["Access-Control-Request-Headers", "Origin", "Access-Control-Request-Methods"]
+    }
+
+    access_control_allow_methods {
+      items = ["GET", "HEAD", "OPTIONS"]
+    }
+
+    access_control_allow_origins {
+      items = ["https://moroz.dev", "http://localhost:3000"]
+    }
+
+    origin_override = true
+  }
+}
+
 resource "aws_cloudfront_cache_policy" "cached_with_qs" {
   name        = "cache-with-query-string"
   default_ttl = 86400
@@ -45,12 +67,14 @@ resource "aws_cloudfront_distribution" "distribution" {
   http_version        = "http2and3"
 
   default_cache_behavior {
-    allowed_methods        = ["GET", "HEAD"]
+    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     cached_methods         = ["GET", "HEAD"]
     target_origin_id       = local.origin_id
     viewer_protocol_policy = "https-only"
-    cache_policy_id        = aws_cloudfront_cache_policy.cached_with_qs.id
+    cache_policy_id        = "658327ea-f89d-4fab-a63d-7e88639e58f6"
     compress               = true
+
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.cors.id
   }
 
   restrictions {
