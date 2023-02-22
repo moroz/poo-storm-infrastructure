@@ -13,7 +13,7 @@ resource "aws_cloudfront_response_headers_policy" "cors" {
     }
 
     access_control_allow_methods {
-      items = ["GET", "HEAD", "OPTIONS"]
+      items = ["GET", "HEAD", "OPTIONS", "POST"]
     }
 
     access_control_allow_origins {
@@ -67,7 +67,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   http_version        = "http2and3"
 
   default_cache_behavior {
-    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+    allowed_methods        = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
     cached_methods         = ["GET", "HEAD"]
     target_origin_id       = local.origin_id
     viewer_protocol_policy = "https-only"
