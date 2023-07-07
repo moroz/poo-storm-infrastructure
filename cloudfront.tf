@@ -1,5 +1,9 @@
 locals {
   origin_id = "LambdaOrigin"
+  lambdas = {
+    "go"   = aws_lambda_function_url.api,
+    "rust" = aws_lambda_function_url.rust_api,
+  }
 }
 
 resource "aws_cloudfront_response_headers_policy" "cors" {
@@ -49,8 +53,10 @@ resource "aws_cloudfront_cache_policy" "cached_with_qs" {
 }
 
 resource "aws_cloudfront_distribution" "distribution" {
+  for_each = local.lambdas
+
   origin {
-    domain_name = replace(replace(aws_lambda_function_url.api.function_url, "https://", ""), "/\\/$/", "")
+    domain_name = replace(replace(each.value.function_url, "https://", ""), "/\\/$/", "")
     origin_id   = local.origin_id
 
     custom_origin_config {

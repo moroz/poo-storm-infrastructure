@@ -49,7 +49,10 @@ resource "aws_iam_policy" "lambda_policy" {
         "Action" : [
           "cloudfront:CreateInvalidation",
         ],
-        "Resource" : aws_cloudfront_distribution.distribution.arn
+        "Resource" : [
+          aws_cloudfront_distribution.distribution["go"].arn,
+          aws_cloudfront_distribution.distribution["rust"].arn
+        ]
       }
     ]
   })
